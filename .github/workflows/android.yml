@@ -8,8 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -24,12 +23,14 @@ jobs:
 
       - name: Build DEBUG APK (signed)
         run: |
-          cd android
-          ./gradlew assembleDebug
+          gradle -p android assembleDebug
 
       - name: Rename APK
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk MigTakip.apk
+          set -e
+          APK_PATH=$(ls -1 android/app/build/outputs/apk/debug/*.apk | head -n 1)
+          echo "Found: $APK_PATH"
+          cp "$APK_PATH" MigTakip.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
