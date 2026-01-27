@@ -25,7 +25,12 @@ jobs:
 
       - name: Rename APK
         run: |
-          cp android/app/build/outputs/apk/release/app-release.apk MigTakip.apk
+         set -e
+         echo "Searching for release APK..."
+         APK_PATH=$(ls -1 android/app/build/outputs/apk/release/*.apk | head -n 1)
+         echo "Found: $APK_PATH"
+         cp "$APK_PATH" MigTakip.apk
+
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
