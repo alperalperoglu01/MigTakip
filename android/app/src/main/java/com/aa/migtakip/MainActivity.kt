@@ -23,6 +23,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import android.content.ComponentName
 
 class MainActivity : ComponentActivity() {
 
@@ -161,11 +162,28 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun launchMigPack() {
-        val pm = packageManager
-        val intent = pm.getLaunchIntentForPackage(Config.MIGPACK_PACKAGE)
-        if (intent != null) startActivity(intent)
-        else Toast.makeText(this, "MigPack bulunamadı: ${Config.MIGPACK_PACKAGE}", Toast.LENGTH_LONG).show()
+    try {
+        // 1) Önce normal launch intent dene
+        packageManager.getLaunchIntentForPackage(Config.MIGPACK_PACKAGE)?.let { intent ->
+            startActivity(intent)
+            return
+        }
+
+        // 2) Olmazsa MainActivity ile direkt aç (sende var: app.migpack.MainActivity)
+        val intent = Intent().apply {
+            component = ComponentName(
+                Config.MIGPACK_PACKAGE,
+                "${Config.MIGPACK_PACKAGE}.MainActivity"
+            )
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        startActivity(intent)
+
+    } catch (e: Exception) {
+        Toast.makeText(this, "MigPack açılamadı: ${Config.MIGPACK_PACKAGE}", Toast.LENGTH_LONG).show()
     }
+}
+
 
     private fun openAccessibilitySettings() {
         try {
