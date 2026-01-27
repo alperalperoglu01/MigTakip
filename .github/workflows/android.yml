@@ -6,6 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -20,12 +21,16 @@ jobs:
         with:
           gradle-version: 8.7
 
-      - name: Build Release APK
-        run: gradle -p android assembleRelease
+      - name: Build DEBUG APK (signed)
+        run: |
+          gradle -p android assembleDebug
 
       - name: Rename APK
         run: |
-          cp android/app/build/outputs/apk/release/app-release.apk MigTakip.apk
+          set -e
+          APK_PATH=$(ls -1 android/app/build/outputs/apk/debug/*.apk | head -n 1)
+          echo "Found: $APK_PATH"
+          cp "$APK_PATH" MigTakip.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
