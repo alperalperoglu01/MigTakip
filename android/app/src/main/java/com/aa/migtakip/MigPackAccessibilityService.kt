@@ -7,8 +7,25 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import java.util.regex.Pattern
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
+
 
 class MigPackAccessibilityService : AccessibilityService() {
+
+    private fun toast(msg: String) {
+            Handler(Looper.getMainLooper()).post {
+                Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
+            }
+        }
+    
+        override fun onServiceConnected() {
+        super.onServiceConnected()
+        toast("MigTakip erişilebilirlik AKTİF ✅")
+    }
+
+
 
     companion object {
         const val ACTION_PACKAGES_DETECTED = "com.aa.migtakip.PACKAGES_DETECTED"
@@ -43,6 +60,7 @@ class MigPackAccessibilityService : AccessibilityService() {
 
         val pkg = event.packageName?.toString() ?: return
         if (pkg != Config.MIGPACK_PACKAGE) return
+        toast("MigPack event geldi ✅")
 
         // Bazı cihazlarda rootInActiveWindow null olabiliyor; event.source fallback
         val root = rootInActiveWindow ?: event.source ?: return
