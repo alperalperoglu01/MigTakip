@@ -2,7 +2,7 @@ package com.aa.migtakip
 
 object Config {
     // MigTakip web app base URL
-    const val BASE_URL = "https://www.sesmotors.com/kurye/public/"
+    const val BASE_URL = "https://www.migtakip.online/public/"
     // MigPack package name (Android'de paket adı)
     const val MIGPACK_PACKAGE = "app.migpack"
     // API endpoint relative path
