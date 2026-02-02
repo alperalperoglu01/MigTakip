@@ -47,6 +47,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        onBackPressedDispatcher.addCallback(this) {
+            if (this@MainActivity::webView.isInitialized && webView.canGoBack()) {
+                webView.goBack()
+            } else {
+                finish() // en son çare: uygulamadan çık
+            }
+        }
+
+
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         toolbar.setNavigationOnClickListener {
             if (webView.canGoBack()) webView.goBack() else finish()
