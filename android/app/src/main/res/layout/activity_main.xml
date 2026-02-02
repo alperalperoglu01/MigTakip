@@ -14,43 +14,6 @@
         app:navigationIcon="@android:drawable/ic_media_previous"
         app:menu="@menu/top_menu" />
 
-    <!-- Sadece ilk kurulumda gösterilecek: erişilebilirlik izni yönlendirmesi -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/setupCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:visibility="gone"
-        app:cardUseCompatPadding="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Otomatik paket çekme için erişilebilirlik izni gerekli."
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="Ayarlar → Erişilebilirlik → MigTakip → Aç"
-                android:alpha="0.8" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnOpenAccessibility"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Erişilebilirliği Aç" />
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
 
     <WebView
         android:id="@+id/webview"
