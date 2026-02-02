@@ -7,6 +7,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import com.google.android.material.appbar.MaterialToolbar
 
 class MainActivity : ComponentActivity() {
@@ -15,45 +16,35 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // ✅ BURAYI KONTROL ET:
+        // Eğer layout dosyan "activityi_main.xml" ise => R.layout.activityi_main
+        // Eğer "activity_main.xml" ise => R.layout.activity_main
         setContentView(R.layout.activity_main)
 
-        // WebView init
         webView = findViewById(R.id.webview)
         setupWebView()
 
-        // Toolbar
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
 
-        // Toolbar geri butonu
         toolbar.setNavigationOnClickListener {
-            if (webView.canGoBack()) {
-                webView.goBack()
-            } else {
-                finish()
-            }
+            if (webView.canGoBack()) webView.goBack() else finish()
         }
 
-        // Menü: sadece yenile
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.action_refresh -> {
-                    webView.reload()
-                    true
-                }
+                R.id.action_refresh -> { webView.reload(); true }
                 else -> false
             }
         }
 
-        // Android geri tuşu: uygulamadan çıkmasın, önce sayfada geri gitsin
-        onBackPressedDispatcher.addCallback(this) {
-            if (webView.canGoBack()) {
-                webView.goBack()
-            } else {
-                finish()
+        // ✅ Android geri tuşu: önce webview geri
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (webView.canGoBack()) webView.goBack() else finish()
             }
-        }
+        })
 
-        // Siteyi aç
         webView.loadUrl(Config.BASE_URL)
     }
 
@@ -72,7 +63,6 @@ class MainActivity : ComponentActivity() {
                 super.onPageFinished(view, url)
             }
         }
-
         webView.webChromeClient = WebChromeClient()
     }
 
